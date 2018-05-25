@@ -1,6 +1,9 @@
+#include "DisplayWindow.h"
+#include "Shader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "DisplayWindow.h"
+#include "Mesh.h"
+
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -14,46 +17,37 @@ int main()
 {
 	// glfw: initialize and configure
 	// ------------------------------
-	DisplayWindow displayWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL");												 // --------------------
-	GLFWwindow* window = displayWindow.GetWindowPtr();
+	
 
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	// glad: load all OpenGL function pointers
-	// ---------------------------------------
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+	DisplayWindow displayWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL");												 
+	// --------------------
+	std::string shaderFilePath = "res\\basicShader";
+	Shader shader(shaderFilePath);
+
+
+	Vertex vertices[] = {
+		Vertex(glm::vec3(-0.5,-0.5,0)),
+		Vertex(glm::vec3(0,0.5,0)),
+		Vertex(glm::vec3(0.5,-0.5,0))
+	};
+	Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+
 
 	// render loop
 	// -----------
-	GLfloat color = 0.0f;
-	while (!glfwWindowShouldClose(window))
+	while (!displayWindow.isClosed())
 	{
-		// input
-		// -----
-		processInput(window);
-
 		// render
 		// ------
-		color += 0.01f;
-		if (color > 1.0f)
-			color = 0.0f;
-		glClearColor(color,0,0,0);
-		glClear(GL_COLOR_BUFFER_BIT);
+		displayWindow.Clear(0.2,0.3,0,1);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		shader.Bind();
+		mesh.Draw();
+
+		displayWindow.Update();
 		Sleep(10);
 	}
 
@@ -63,19 +57,4 @@ int main()
 	return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-}
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
-	glViewport(0, 0, width, height);
-}

@@ -1,3 +1,8 @@
-﻿  main.cpp
+﻿  Mesh.cpp
+  main.cpp
+c:\users\alek\desktop\studia\programowanierownolegle\opengl_project01\opengl_project01\shader.h(16): warning C4091: 'static ': ignored on left of 'Shader::shaders' when no variable is declared
+c:\users\alek\desktop\studia\programowanierownolegle\opengl_project01\opengl_project01\main.cpp(43): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   OpenGL_Project01.vcxproj -> C:\Users\Alek\Desktop\studia\ProgramowanieRownolegle\OpenGL_Project01\x64\Debug\OpenGL_Project01.exe
   OpenGL_Project01.vcxproj -> C:\Users\Alek\Desktop\studia\ProgramowanieRownolegle\OpenGL_Project01\x64\Debug\OpenGL_Project01.pdb (Partial PDB)
